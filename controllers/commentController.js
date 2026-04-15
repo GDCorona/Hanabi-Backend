@@ -15,8 +15,8 @@ export const getComments = async (req, res) => {
             const user = users.find(u => u.email === c.email);
             return {
                 ...c.toObject(),
-                name: user ? user.name : "Unknown",
-                avatar: user ? user.avatar : "/uploads/defaultAvt.png",
+                name: user ? user.name : null,
+                avatar: user ? user.avatar : null,
                 avatarHash: user ? user.avatarHash : null
             };
         });
@@ -40,7 +40,7 @@ export const createComment = async (req, res) => {
             }
         }
 
-        let avatarPath = user?.avatar || "/uploads/defaultAvt.png";
+        let avatarPath = user?.avatar || null;
         let newHash = null;
 
         if (req.file) {
