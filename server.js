@@ -15,7 +15,7 @@ app.use(express.json());
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://gdcorona.github.io' 
+    ...(process.env.LIVE_DOMAINS ? process.env.LIVE_DOMAINS.split(',') : [])
 ];
 app.use(cors({
     origin: function (origin, callback) {     
