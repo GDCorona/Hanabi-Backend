@@ -10,7 +10,12 @@ export const getVisits = async (req, res) => {
 
 export const incrementVisits = async (req, res) => {
   try {
-    const userIp = req.ip; 
+    // Grab the real IP from the proxy headers, fallback to standard IP
+    let userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // Proxies sometimes send a list of IPs (e.g., "clientIP, proxy1, proxy2"), always get the first one in the list
+    if (userIp && userIp.includes(',')) {
+        userIp = userIp.split(',')[0].trim();
+    }
     const existingClick = await Click.findOne({ ipAddress: userIp }); // Check if IP is already in database
     if (existingClick) {
       const v = await Visit.findById(VISIT_ID);
