@@ -11,6 +11,7 @@ configureCloudinary();
 
 const app = express();
 app.use(express.json());
+app.set('trust proxy', 1);
 // URLs that are allowed to talk to backend
 const allowedOrigins = [
     'http://localhost:5173',
