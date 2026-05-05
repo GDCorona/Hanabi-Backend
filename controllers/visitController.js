@@ -20,7 +20,7 @@ export const incrementVisits = async (req, res) => {
     if (existingClick) {
       const v = await Visit.findById(VISIT_ID);
       return res.status(403).json({ 
-        error: "Ghost click detected", 
+        error: "You have already clicked!", 
         visits: v ? v.count : 0 
       });
     }
