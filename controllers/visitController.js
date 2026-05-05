@@ -14,7 +14,7 @@ export const incrementVisits = async (req, res) => {
     let userIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     // Proxies sometimes send a list of IPs (e.g., "clientIP, proxy1, proxy2"), always get the first one in the list
     if (userIp && userIp.includes(',')) {
-        userIp = userIp.split(',')[0].trim();
+      userIp = userIp.split(',')[0].trim();
     }
     const existingClick = await Click.findOne({ ipAddress: userIp }); // Check if IP is already in database
     if (existingClick) {
