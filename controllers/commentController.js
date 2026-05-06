@@ -86,6 +86,15 @@ export const updateComment = async (req, res) => {
         );
         if (!updated) return res.status(404).json({ error: "Not found" });
         res.json(updated);
+        const { text, email } = req.body;
+        const comment = await Comment.findById(req.params.id);  
+        if (!comment) return res.status(404).json({ error: "Not found" });
+        if (comment.email !== email) {
+            return res.status(403).json({ error: "Unauthorized: You do not own this comment." });
+        }
+        comment.text = text;
+        await comment.save();
+        res.json(comment);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -93,6 +102,12 @@ export const updateComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
     try {
+        const { email } = req.query;
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) return res.status(404).json({ error: "Not found" });
+        if (comment.email !== email) {
+            return res.status(403).json({ error: "Unauthorized: You do not own this comment." });
+        }
         await Comment.findByIdAndDelete(req.params.id);
         res.json({ success: true });
     } catch (err) {
