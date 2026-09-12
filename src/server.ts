@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { connectDB, configureCloudinary } from "./config/index.js";
 import commentRoutes from "./routes/commentRoutes.js";
@@ -30,7 +30,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true // For cookies or secure sessions
 }));
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     const origin = req.get('origin') || req.get('referer') || "Unknown Origin";
     console.log(`📩 Request received from: ${origin}`);
     next();
